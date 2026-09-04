@@ -44,16 +44,20 @@
     padding: 24px 12px 60px;
   }
 
+  /* ---------- Strict Language Separation ---------- */
+  /* If body does NOT have lang-en, hide English */
+  body:not(.lang-en) .en { display: none !important; }
+  /* If body DOES have lang-en, hide Tamil */
+  body.lang-en .ta { display: none !important; }
+
+  /* English Fonts */
   body.lang-en { font-family: 'Cormorant Garamond', serif; }
+  body.lang-en h1.title { font-family: 'Cinzel Decorative', serif; font-size: clamp(22px, 6vw, 28px); }
+  body.lang-en .knock-prompt .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(18px, 4vw, 22px); }
+  body.lang-en .honoree .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(20px, 5vw, 24px); }
+  body.lang-en .hosts .names { font-family: 'Cinzel Decorative', serif; font-size: clamp(15px, 4vw, 18px); }
 
-  .ta { display: block; }
-  .en { display: none; }
-  body.lang-en .ta { display: none; }
-  body.lang-en .en { display: block; }
-  span.ta, span.en { display: inline; }
-  body.lang-en span.ta { display: none; }
-  body.lang-en span.en { display: inline; }
-
+  /* ---------- Animations & Elements ---------- */
   #petals-container {
     position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 5;
   }
@@ -175,7 +179,6 @@
     animation: name-pulse 2s ease-in-out infinite;
     margin-bottom: 4px;
   }
-  body.lang-en .knock-prompt .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(18px, 4vw, 22px); }
   @keyframes name-pulse {
     0%, 100% { opacity: 0.8; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.04); }
@@ -218,7 +221,6 @@
     color: var(--magenta); margin: 0 0 4px; line-height: 1.2;
     text-shadow: 1px 2px 0 #fff5de;
   }
-  body.lang-en h1.title { font-family: 'Cinzel Decorative', serif; font-size: clamp(22px, 6vw, 28px); }
   
   .divider { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 12px 0 16px; color: var(--gold); }
   .divider::before, .divider::after { content: ""; height: 1.5px; width: 60px; background: linear-gradient(90deg, transparent, var(--gold)); }
@@ -229,7 +231,6 @@
     display: block; font-family: 'Catamaran', sans-serif; font-weight: 800; 
     font-size: clamp(24px, 6vw, 28px); color: var(--magenta); margin-top: 6px;
   }
-  body.lang-en .honoree .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(20px, 5vw, 24px); }
 
   .details {
     text-align: left; max-width: 380px; margin: 0 auto 24px;
@@ -262,7 +263,6 @@
   .hosts { margin-top: 10px; }
   .hosts .from { font-size: clamp(13px, 3vw, 15px); color: var(--maroon); margin-bottom: 4px; }
   .hosts .names { font-family: 'Catamaran', sans-serif; font-weight: 800; font-size: clamp(18px, 4.5vw, 21px); color: var(--magenta); }
-  body.lang-en .hosts .names { font-family: 'Cinzel Decorative', serif; font-size: clamp(15px, 4vw, 18px); }
   .hosts .phone { margin-top: 8px; font-size: clamp(14px, 3.5vw, 16px); }
   .hosts .phone a { color: var(--maroon-deep); text-decoration: none; font-weight: 700; }
 
@@ -289,12 +289,13 @@
   }
 </style>
 </head>
+
+<!-- Body loaded in English mode immediately -->
 <body class="lang-en">
 
 <main class="app-wrapper">
   <div id="petals-container"></div>
 
-  <!-- English button is now first and set as active on load -->
   <div class="lang-toggle">
     <button id="btnEn" class="active" onclick="setLang('en')">English</button>
     <button id="btnTa" onclick="setLang('ta')">தமிழ்</button>
