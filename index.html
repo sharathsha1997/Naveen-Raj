@@ -39,7 +39,7 @@
     width: 100%;
     min-height: 100vh;
     display: flex;
-    align-items: flex-start; /* Aligns content to top naturally */
+    align-items: flex-start;
     justify-content: center;
     padding: 16px 8px 60px;
   }
@@ -103,15 +103,14 @@
     z-index: 10;
   }
 
-  /* Fixed Gopuram Capstone */
   .gopuram {
     position: relative; width: 100%; height: 100px; 
-    margin-bottom: -10px; /* Pulls down perfectly over the door/card border */
+    margin-bottom: -10px;
     display: flex; justify-content: center; z-index: 30;
   }
   .gopuram svg { width: 160px; height: 100px; filter: drop-shadow(0 4px 8px rgba(80, 8, 38, 0.35)); }
 
-  /* OVERLAY GRID: Forces Door and Card to occupy the exact same space */
+  /* OVERLAY GRID */
   .door-and-card {
     display: grid;
     width: 100%;
@@ -129,8 +128,6 @@
     perspective: 1600px;
     border-radius: 14px;
     box-shadow: 0 20px 50px rgba(80, 8, 38, 0.4), inset 0 0 0 6px var(--gold), inset 0 0 0 10px var(--maroon-deep);
-    
-    /* Fades away COMPLETELY after 1.2 seconds so there's no hanging blank space! */
     transition: transform 0.3s ease, opacity 0.8s ease 1.2s, visibility 0.8s ease 1.2s;
     z-index: 20;
     -webkit-tap-highlight-color: transparent;
@@ -217,7 +214,7 @@
     position: relative; width: 100%;
     background: radial-gradient(ellipse at 50% -10%, #ffffff 0%, #fff7e6 45%, var(--cream) 100%);
     border: 2px solid var(--gold);
-    border-radius: 14px; /* Perfectly frames exactly where the door used to be */
+    border-radius: 14px;
     padding: 24px 16px 26px; text-align: center;
     box-shadow: 0 25px 50px rgba(80, 8, 38, 0.2);
     z-index: 10;
@@ -255,9 +252,9 @@
     font-size: clamp(22px, 6vw, 26px); color: var(--magenta); margin-top: 4px;
   }
 
-  /* Baby Photo Frame */
+  /* ---------- FIXED Baby Photo Frame ---------- */
   .baby-frame {
-    width: 120px; height: 120px;
+    width: 130px; height: 130px; /* Made slightly larger for perfect fit */
     margin: 16px auto 24px;
     border-radius: 50%;
     padding: 4px;
@@ -269,9 +266,13 @@
   .baby-frame img {
     width: 100%; height: 100%;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #fff;
-    background-color: #fff7e6;
+    
+    /* Changed from cover to contain so the exact image is preserved without cutting off */
+    object-fit: contain; 
+    
+    border: 2px solid #ffffff;
+    background-color: #ffffff; /* Matches the white background of the photo perfectly */
+    padding: 6px; /* Provides inner breathing room so nothing touches the edges */
   }
 
   /* Details Card */
@@ -345,7 +346,6 @@
 
   <div class="scene" id="scene">
     
-    <!-- Gopuram sits fixed over everything -->
     <div class="gopuram">
       <svg viewBox="0 0 170 110" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -375,7 +375,6 @@
       </svg>
     </div>
 
-    <!-- The grid locks the door and the card in the same exact space -->
     <div class="door-and-card">
       <div class="door-wrap" id="doorWrap" onclick="openDoor()">
         <div class="door-frame">
@@ -392,7 +391,6 @@
 
       <div class="invitation-card" id="card">
         
-        <!-- Murugan Vel SVG -->
         <svg class="vel" viewBox="0 0 60 180" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="velGold" x1="0" y1="0" x2="1" y2="1">
@@ -555,8 +553,6 @@
     document.getElementById('doorWrap').classList.add('open');
     document.getElementById('scene').classList.add('opened');
     for (let i = 0; i < 20; i++) setTimeout(() => spawnPetal(petalContainer), i * 30);
-    
-    // Auto-scrolls to anchor the Gopuram at the top of the mobile screen cleanly
     setTimeout(() => document.getElementById('scene').scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
   }
 </script>
