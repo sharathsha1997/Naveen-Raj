@@ -31,15 +31,15 @@
     font-family: 'Mukta Malar', 'Cormorant Garamond', serif;
     color: var(--ink);
     position: relative;
+    overflow-x: hidden;
   }
   
   .app-wrapper {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    overflow-x: hidden;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Aligns content to top naturally */
     justify-content: center;
     padding: 16px 8px 60px;
   }
@@ -55,9 +55,9 @@
   body.lang-en .honoree .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(20px, 5vw, 24px); }
   body.lang-en .hosts .names { font-family: 'Cinzel Decorative', serif; font-size: clamp(15px, 4vw, 18px); }
 
-  /* ---------- Animations & Elements ---------- */
+  /* ---------- Falling Petals ---------- */
   #petals-container {
-    position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 5;
+    position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 100;
   }
   .petal {
     position: absolute; top: -5%;
@@ -74,8 +74,9 @@
   @keyframes petal-fall { to { transform: translateY(115vh) rotate(360deg); } }
   @keyframes petal-sway { 0%, 100% { margin-left: 0; } 50% { margin-left: 40px; } }
 
+  /* ---------- Language Toggle ---------- */
   .lang-toggle {
-    position: fixed; top: 12px; right: 12px; z-index: 50;
+    position: fixed; top: 12px; right: 12px; z-index: 150;
     display: flex; background: rgba(255, 255, 255, 0.25);
     border: 1px solid rgba(201, 151, 43, 0.5); border-radius: 999px;
     padding: 4px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -93,30 +94,55 @@
     box-shadow: 0 2px 8px rgba(80, 8, 38, 0.4);
   }
 
-  /* 100% Mobile Optimized Scene */
+  /* ---------- 100% Mobile Optimized Scene ---------- */
   .scene {
     position: relative; 
     width: 95vw;
     max-width: 400px;
-    margin: 45px auto 20px;
+    margin: 40px auto 20px;
     z-index: 10;
   }
 
+  /* Fixed Gopuram Capstone */
   .gopuram {
-    position: relative; width: 100%; height: 100px; margin-bottom: -6px;
-    display: flex; justify-content: center; z-index: 2;
+    position: relative; width: 100%; height: 100px; 
+    margin-bottom: -10px; /* Pulls down perfectly over the door/card border */
+    display: flex; justify-content: center; z-index: 30;
   }
   .gopuram svg { width: 160px; height: 100px; filter: drop-shadow(0 4px 8px rgba(80, 8, 38, 0.35)); }
 
+  /* OVERLAY GRID: Forces Door and Card to occupy the exact same space */
+  .door-and-card {
+    display: grid;
+    width: 100%;
+    align-items: start;
+  }
+  
+  .door-wrap, .invitation-card {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* ---------- Door Wrap ---------- */
   .door-wrap {
-    position: relative; width: 100%; aspect-ratio: 3/4; max-height: 540px;
-    margin: 0 auto; perspective: 1600px;
-    border-radius: 14px; overflow: hidden; cursor: pointer;
+    position: relative; width: 100%; aspect-ratio: 3/4;
+    perspective: 1600px;
+    border-radius: 14px;
     box-shadow: 0 20px 50px rgba(80, 8, 38, 0.4), inset 0 0 0 6px var(--gold), inset 0 0 0 10px var(--maroon-deep);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* Fades away COMPLETELY after 1.2 seconds so there's no hanging blank space! */
+    transition: transform 0.3s ease, opacity 0.8s ease 1.2s, visibility 0.8s ease 1.2s;
+    z-index: 20;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
   }
   .door-wrap:active { transform: scale(0.98); }
+  
+  .door-wrap.open {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   
   .door-frame { position: absolute; inset: 0; display: flex; }
   
@@ -161,13 +187,11 @@
 
   .door-wrap.open .door-panel.left { transform: rotateY(-120deg); }
   .door-wrap.open .door-panel.right { transform: rotateY(120deg); }
-  .door-wrap.open .door-frame { pointer-events: none; }
-  .door-wrap.open { box-shadow: none; pointer-events: none; }
 
   .knock-prompt {
     position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
     text-align: center; z-index: 6; color: #fff3da;
-    background: rgba(0, 0, 0, 0.4); padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.45); padding: 10px 20px;
     border-radius: 12px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(233, 200, 119, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -190,24 +214,25 @@
 
   /* ---------- Inner Card ---------- */
   .invitation-card {
-    position: relative; margin-top: -10px;
+    position: relative; width: 100%;
     background: radial-gradient(ellipse at 50% -10%, #ffffff 0%, #fff7e6 45%, var(--cream) 100%);
-    border: 2px solid var(--gold); border-top: none;
-    border-radius: 0 0 18px 18px;
-    padding: 30px 16px 26px; text-align: center;
+    border: 2px solid var(--gold);
+    border-radius: 14px; /* Perfectly frames exactly where the door used to be */
+    padding: 24px 16px 26px; text-align: center;
     box-shadow: 0 25px 50px rgba(80, 8, 38, 0.2);
+    z-index: 10;
     
-    opacity: 0; max-height: 0; transform: translateY(-30px) scale(0.95);
-    transition: opacity 0.8s ease 0.4s, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s, max-height 1s ease 0.4s;
+    opacity: 0; max-height: 0; transform: translateY(-20px) scale(0.95);
+    transition: opacity 0.8s ease 0.4s, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s, max-height 1.2s ease 0s;
     overflow: hidden;
   }
-  .door-wrap.open ~ .invitation-card,
+  
   .scene.opened .invitation-card {
     opacity: 1; max-height: 2500px; transform: translateY(0) scale(1); overflow: visible;
   }
 
   /* Murugan Vel SVG Top */
-  .vel { width: 44px; height: 110px; margin: 0 auto 10px; display: block; filter: drop-shadow(0 4px 6px rgba(80, 8, 38, 0.2)); }
+  .vel { width: 44px; height: 110px; margin: 12px auto 8px; display: block; filter: drop-shadow(0 4px 6px rgba(80, 8, 38, 0.2)); }
 
   .eyebrow {
     font-size: clamp(12px, 3.5vw, 14px); letter-spacing: .03em; color: var(--maroon);
@@ -319,6 +344,8 @@
   </div>
 
   <div class="scene" id="scene">
+    
+    <!-- Gopuram sits fixed over everything -->
     <div class="gopuram">
       <svg viewBox="0 0 170 110" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -348,148 +375,151 @@
       </svg>
     </div>
 
-    <div class="door-wrap" id="doorWrap" onclick="openDoor()">
-      <div class="door-frame">
-        <div class="door-panel left"><div class="door-handle"></div></div>
-        <div class="door-panel right"><div class="door-handle"></div></div>
-      </div>
-      <div class="knock-prompt">
-        <span class="name ta">நளினா நவீன்ராஜ்</span>
-        <span class="name en">Nalina Naveenraj</span>
-        <span class="hint ta">✦ தட்டி திறக்கவும் ✦</span>
-        <span class="hint en">✦ Tap to open ✦</span>
-      </div>
-    </div>
-
-    <div class="invitation-card" id="card">
-      
-      <!-- Murugan Vel SVG -->
-      <svg class="vel" viewBox="0 0 60 180" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="velGold" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#fbc98a"/>
-            <stop offset="50%" stop-color="#c9972b"/>
-            <stop offset="100%" stop-color="#8a6a1a"/>
-          </linearGradient>
-        </defs>
-        <rect x="26" y="90" width="8" height="90" fill="url(#velGold)" rx="3"/>
-        <path d="M20 90 L40 90 L34 70 L26 70 Z" fill="url(#velGold)"/>
-        <path d="M30 10 C45 40 50 75 30 90 C10 75 15 40 30 10 Z" fill="url(#velGold)"/>
-        <path d="M30 20 C40 45 42 70 30 85 C18 70 20 45 30 20 Z" fill="#e9c877" opacity="0.6"/>
-        <line x1="20" y1="60" x2="40" y2="60" stroke="#ffffff" stroke-width="3"/>
-        <line x1="18" y1="68" x2="42" y2="68" stroke="#ffffff" stroke-width="3"/>
-        <line x1="22" y1="52" x2="38" y2="52" stroke="#ffffff" stroke-width="3"/>
-        <circle cx="30" cy="60" r="2.5" fill="#a6144b"/>
-      </svg>
-
-      <div class="eyebrow">
-        <span class="ta">அகல்விழி மன்னார்சாமி பச்சையப்பன் துணை</span>
-        <span class="en">With the Grace of Lord Manarsamy Pachaiyappan</span>
+    <!-- The grid locks the door and the card in the same exact space -->
+    <div class="door-and-card">
+      <div class="door-wrap" id="doorWrap" onclick="openDoor()">
+        <div class="door-frame">
+          <div class="door-panel left"><div class="door-handle"></div></div>
+          <div class="door-panel right"><div class="door-handle"></div></div>
+        </div>
+        <div class="knock-prompt">
+          <span class="name ta">நளினா நவீன்ராஜ்</span>
+          <span class="name en">Nalina Naveenraj</span>
+          <span class="hint ta">✦ தட்டி திறக்கவும் ✦</span>
+          <span class="hint en">✦ Tap to open ✦</span>
+        </div>
       </div>
 
-      <h1 class="title">
-        <span class="ta">சீமந்தவிழா அழைப்பிதழ்</span>
-        <span class="en">Seemantham Invitation</span>
-      </h1>
-      <div class="divider">✿</div>
+      <div class="invitation-card" id="card">
+        
+        <!-- Murugan Vel SVG -->
+        <svg class="vel" viewBox="0 0 60 180" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="velGold" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#fbc98a"/>
+              <stop offset="50%" stop-color="#c9972b"/>
+              <stop offset="100%" stop-color="#8a6a1a"/>
+            </linearGradient>
+          </defs>
+          <rect x="26" y="90" width="8" height="90" fill="url(#velGold)" rx="3"/>
+          <path d="M20 90 L40 90 L34 70 L26 70 Z" fill="url(#velGold)"/>
+          <path d="M30 10 C45 40 50 75 30 90 C10 75 15 40 30 10 Z" fill="url(#velGold)"/>
+          <path d="M30 20 C40 45 42 70 30 85 C18 70 20 45 30 20 Z" fill="#e9c877" opacity="0.6"/>
+          <line x1="20" y1="60" x2="40" y2="60" stroke="#ffffff" stroke-width="3"/>
+          <line x1="18" y1="68" x2="42" y2="68" stroke="#ffffff" stroke-width="3"/>
+          <line x1="22" y1="52" x2="38" y2="52" stroke="#ffffff" stroke-width="3"/>
+          <circle cx="30" cy="60" r="2.5" fill="#a6144b"/>
+        </svg>
 
-      <div class="honoree">
-        <span class="ta">சௌபாக்கியவதி</span><span class="en">Smt.</span>
-        <span class="name">
-          <span class="ta">நளினா நவீன்ராஜ்</span>
-          <span class="en">Nalina Naveenraj</span>
-        </span>
-      </div>
+        <div class="eyebrow">
+          <span class="ta">அகல்விழி மன்னார்சாமி பச்சையப்பன் துணை</span>
+          <span class="en">With the Grace of Lord Manarsamy Pachaiyappan</span>
+        </div>
 
-      <!-- Baby Photo Section -->
-      <div class="baby-frame">
-        <img src="baby.jpg" alt="Baby Photo" id="babyImage">
-      </div>
+        <h1 class="title">
+          <span class="ta">சீமந்தவிழா அழைப்பிதழ்</span>
+          <span class="en">Seemantham Invitation</span>
+        </h1>
+        <div class="divider">✿</div>
 
-      <div class="details">
-        <div class="row">
-          <div class="label"><span class="ta">நாள்</span><span class="en">Date</span></div>
-          <div class="value">
-            <b><span class="ta">திங்கட்கிழமை, 07.09.2026</span><span class="en">Monday, September 7th, 2026</span></b>
+        <div class="honoree">
+          <span class="ta">சௌபாக்கியவதி</span><span class="en">Smt.</span>
+          <span class="name">
+            <span class="ta">நளினா நவீன்ராஜ்</span>
+            <span class="en">Nalina Naveenraj</span>
+          </span>
+        </div>
+
+        <!-- Baby Photo Section -->
+        <div class="baby-frame">
+          <img src="baby.jpg" alt="Baby Photo" id="babyImage">
+        </div>
+
+        <div class="details">
+          <div class="row">
+            <div class="label"><span class="ta">நாள்</span><span class="en">Date</span></div>
+            <div class="value">
+              <b><span class="ta">திங்கட்கிழமை, 07.09.2026</span><span class="en">Monday, September 7th, 2026</span></b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><span class="ta">நேரம்</span><span class="en">Time</span></div>
+            <div class="value">
+              <b><span class="ta">காலை 09:15 முதல் 10:15 வரை</span><span class="en">09:15 AM to 10:15 AM</span></b>
+            </div>
+          </div>
+          <div class="row">
+            <div class="label"><span class="ta">இடம்</span><span class="en">Venue</span></div>
+            <div class="value">
+              <b>
+                <span class="ta">டி.எம்.எஸ். பார்ட்டி மினி ஹால்</span>
+                <span class="en">T.M.S. Party Mini Hall</span>
+              </b><br>
+              <span class="ta">எண்.48, பொழிச்சலூர் மெயின் ரோடு, பம்மல், சென்னை – 75</span>
+              <span class="en">No.48, Pozhichalur Main Road, Pammal, Chennai – 600075</span>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="label"><span class="ta">நேரம்</span><span class="en">Time</span></div>
-          <div class="value">
-            <b><span class="ta">காலை 09:15 முதல் 10:15 வரை</span><span class="en">09:15 AM to 10:15 AM</span></b>
+
+        <p class="blessing">
+          <span class="ta">உறவினர்கள், நண்பர்கள் அனைவரும் தவறாமல் வருகை தந்து எங்கள் மருமகளை வாழ்த்தி ஆசீர்வதிக்குமாறு அன்புடன் அழைக்கிறோம்.</span>
+          <span class="en">We warmly invite all our relatives and friends to grace the occasion with your presence, and shower your blessings on our beloved daughter‑in‑law.</span>
+        </p>
+
+        <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=T.M.S.+Party+Mini+Hall+Pammal+Chennai" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+          <span class="ta">வரைபடத்தில் காண்க</span>
+          <span class="en">View on Google Maps</span>
+        </a>
+
+        <div class="hosts">
+          <div class="from">
+            <span class="ta">இங்ஙனம் தங்கள் அன்புள்ள</span>
+            <span class="en">With love and warm regards,</span>
           </div>
-        </div>
-        <div class="row">
-          <div class="label"><span class="ta">இடம்</span><span class="en">Venue</span></div>
-          <div class="value">
-            <b>
-              <span class="ta">டி.எம்.எஸ். பார்ட்டி மினி ஹால்</span>
-              <span class="en">T.M.S. Party Mini Hall</span>
-            </b><br>
-            <span class="ta">எண்.48, பொழிச்சலூர் மெயின் ரோடு, பம்மல், சென்னை – 75</span>
-            <span class="en">No.48, Pozhichalur Main Road, Pammal, Chennai – 600075</span>
+          <div class="names">
+            <span class="ta">திரு. வெற்றிவேல் மற்றும் திருமதி. தேவி</span>
+            <span class="en">Mr. Vetrivel &amp; Mrs. Devi</span>
           </div>
+          <div class="phone">📞 <a href="tel:+919941515018">99415 15018</a></div>
         </div>
-      </div>
 
-      <p class="blessing">
-        <span class="ta">உறவினர்கள், நண்பர்கள் அனைவரும் தவறாமல் வருகை தந்து எங்கள் மருமகளை வாழ்த்தி ஆசீர்வதிக்குமாறு அன்புடன் அழைக்கிறோம்.</span>
-        <span class="en">We warmly invite all our relatives and friends to grace the occasion with your presence, and shower your blessings on our beloved daughter‑in‑law.</span>
-      </p>
-
-      <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=T.M.S.+Party+Mini+Hall+Pammal+Chennai" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-        <span class="ta">வரைபடத்தில் காண்க</span>
-        <span class="en">View on Google Maps</span>
-      </a>
-
-      <div class="hosts">
-        <div class="from">
-          <span class="ta">இங்ஙனம் தங்கள் அன்புள்ள</span>
-          <span class="en">With love and warm regards,</span>
+        <div class="feet">
+          <svg viewBox="0 0 24 32" fill="#f2a3c3"><ellipse cx="12" cy="12" rx="8" ry="11"/><circle cx="4" cy="4" r="3"/><circle cx="9" cy="1" r="2.6"/><circle cx="15" cy="1" r="2.6"/><circle cx="20" cy="4" r="2.4"/></svg>
+          <svg viewBox="0 0 24 32" fill="#8fc6e8"><ellipse cx="12" cy="12" rx="8" ry="11"/><circle cx="4" cy="4" r="3"/><circle cx="9" cy="1" r="2.6"/><circle cx="15" cy="1" r="2.6"/><circle cx="20" cy="4" r="2.4"/></svg>
         </div>
-        <div class="names">
-          <span class="ta">திரு. வெற்றிவேல் மற்றும் திருமதி. தேவி</span>
-          <span class="en">Mr. Vetrivel &amp; Mrs. Devi</span>
-        </div>
-        <div class="phone">📞 <a href="tel:+919941515018">99415 15018</a></div>
+
+        <footer class="note">
+          <span class="ta">அன்புடன் அழைக்கிறோம் — வருகை வேண்டும்</span>
+          <span class="en">Your presence is our blessing</span>
+        </footer>
+
+        <svg class="peacock" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#2e7d6b" stroke-width="1">
+            <path d="M70 70 C40 40 20 20 5 8" fill="none" opacity=".7"/>
+            <path d="M70 70 C50 35 35 15 25 2" fill="none" opacity=".7"/>
+            <path d="M70 70 C60 30 55 10 55 0" fill="none" opacity=".7"/>
+            <circle cx="5" cy="8" r="5" fill="#3fae8f"/>
+            <circle cx="25" cy="2" r="5" fill="#4fc1a1"/>
+            <circle cx="55" cy="0" r="5" fill="#3fae8f"/>
+          </g>
+          <ellipse cx="82" cy="78" rx="20" ry="14" fill="#2e7d6b"/>
+          <circle cx="102" cy="66" r="9" fill="#2e7d6b"/>
+          <circle cx="106" cy="63" r="2" fill="#0b2c25"/>
+          <path d="M112 63 L120 60 L113 66 Z" fill="#e9c877"/>
+          <path d="M65 92 L60 104 M70 94 L67 106 M76 94 L78 106" stroke="#a6721c" stroke-width="2.5" fill="none"/>
+        </svg>
+
+        <svg class="lamp" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+          <g class="flame">
+            <ellipse cx="20" cy="16" rx="7" ry="12" fill="#ffb23e"/>
+            <ellipse cx="20" cy="19" rx="3.6" ry="7" fill="#fff1c2"/>
+          </g>
+          <path d="M8 30 C8 44 32 44 32 30 C32 26 27 26 20 26 C13 26 8 26 8 30 Z" fill="#c9972b"/>
+          <rect x="17" y="44" width="6" height="12" fill="#a6721c"/>
+          <ellipse cx="20" cy="57" rx="14" ry="3" fill="#7a0c3e" opacity=".5"/>
+        </svg>
       </div>
-
-      <div class="feet">
-        <svg viewBox="0 0 24 32" fill="#f2a3c3"><ellipse cx="12" cy="12" rx="8" ry="11"/><circle cx="4" cy="4" r="3"/><circle cx="9" cy="1" r="2.6"/><circle cx="15" cy="1" r="2.6"/><circle cx="20" cy="4" r="2.4"/></svg>
-        <svg viewBox="0 0 24 32" fill="#8fc6e8"><ellipse cx="12" cy="12" rx="8" ry="11"/><circle cx="4" cy="4" r="3"/><circle cx="9" cy="1" r="2.6"/><circle cx="15" cy="1" r="2.6"/><circle cx="20" cy="4" r="2.4"/></svg>
-      </div>
-
-      <footer class="note">
-        <span class="ta">அன்புடன் அழைக்கிறோம் — வருகை வேண்டும்</span>
-        <span class="en">Your presence is our blessing</span>
-      </footer>
-
-      <svg class="peacock" viewBox="0 0 140 110" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="#2e7d6b" stroke-width="1">
-          <path d="M70 70 C40 40 20 20 5 8" fill="none" opacity=".7"/>
-          <path d="M70 70 C50 35 35 15 25 2" fill="none" opacity=".7"/>
-          <path d="M70 70 C60 30 55 10 55 0" fill="none" opacity=".7"/>
-          <circle cx="5" cy="8" r="5" fill="#3fae8f"/>
-          <circle cx="25" cy="2" r="5" fill="#4fc1a1"/>
-          <circle cx="55" cy="0" r="5" fill="#3fae8f"/>
-        </g>
-        <ellipse cx="82" cy="78" rx="20" ry="14" fill="#2e7d6b"/>
-        <circle cx="102" cy="66" r="9" fill="#2e7d6b"/>
-        <circle cx="106" cy="63" r="2" fill="#0b2c25"/>
-        <path d="M112 63 L120 60 L113 66 Z" fill="#e9c877"/>
-        <path d="M65 92 L60 104 M70 94 L67 106 M76 94 L78 106" stroke="#a6721c" stroke-width="2.5" fill="none"/>
-      </svg>
-
-      <svg class="lamp" viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
-        <g class="flame">
-          <ellipse cx="20" cy="16" rx="7" ry="12" fill="#ffb23e"/>
-          <ellipse cx="20" cy="19" rx="3.6" ry="7" fill="#fff1c2"/>
-        </g>
-        <path d="M8 30 C8 44 32 44 32 30 C32 26 27 26 20 26 C13 26 8 26 8 30 Z" fill="#c9972b"/>
-        <rect x="17" y="44" width="6" height="12" fill="#a6721c"/>
-        <ellipse cx="20" cy="57" rx="14" ry="3" fill="#7a0c3e" opacity=".5"/>
-      </svg>
     </div>
   </div>
 </main>
@@ -525,7 +555,9 @@
     document.getElementById('doorWrap').classList.add('open');
     document.getElementById('scene').classList.add('opened');
     for (let i = 0; i < 20; i++) setTimeout(() => spawnPetal(petalContainer), i * 30);
-    setTimeout(() => document.getElementById('card').scrollIntoView({ behavior: 'smooth', block: 'start' }), 700);
+    
+    // Auto-scrolls to anchor the Gopuram at the top of the mobile screen cleanly
+    setTimeout(() => document.getElementById('scene').scrollIntoView({ behavior: 'smooth', block: 'start' }), 600);
   }
 </script>
 
