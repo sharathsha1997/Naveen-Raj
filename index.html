@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Seemantham Invitation | சீமந்தவிழா அழைப்பிதழ்</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,19 +41,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px 12px 60px;
+    padding: 16px 8px 60px; /* Reduced padding for max mobile size */
   }
 
   /* ---------- Strict Language Separation ---------- */
-  /* If body does NOT have lang-en, hide English */
   body:not(.lang-en) .en { display: none !important; }
-  /* If body DOES have lang-en, hide Tamil */
   body.lang-en .ta { display: none !important; }
 
   /* English Fonts */
   body.lang-en { font-family: 'Cormorant Garamond', serif; }
-  body.lang-en h1.title { font-family: 'Cinzel Decorative', serif; font-size: clamp(22px, 6vw, 28px); }
-  body.lang-en .knock-prompt .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(18px, 4vw, 22px); }
+  body.lang-en h1.title { font-family: 'Cinzel Decorative', serif; font-size: clamp(22px, 6vw, 26px); }
+  body.lang-en .knock-prompt .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(18px, 5vw, 22px); }
   body.lang-en .honoree .name { font-family: 'Cinzel Decorative', serif; font-size: clamp(20px, 5vw, 24px); }
   body.lang-en .hosts .names { font-family: 'Cinzel Decorative', serif; font-size: clamp(15px, 4vw, 18px); }
 
@@ -77,16 +75,16 @@
   @keyframes petal-sway { 0%, 100% { margin-left: 0; } 50% { margin-left: 40px; } }
 
   .lang-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 50;
-    display: flex; background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(201, 151, 43, 0.4); border-radius: 999px;
+    position: fixed; top: 12px; right: 12px; z-index: 50;
+    display: flex; background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(201, 151, 43, 0.5); border-radius: 999px;
     padding: 4px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 12px rgba(122, 12, 62, 0.1);
+    box-shadow: 0 4px 12px rgba(122, 12, 62, 0.15);
   }
   .lang-toggle button {
     border: none; background: transparent; cursor: pointer;
-    padding: 7px 16px; border-radius: 999px; font-weight: 700;
-    font-family: 'Mukta Malar', sans-serif; font-size: clamp(12px, 3vw, 14px);
+    padding: 6px 14px; border-radius: 999px; font-weight: 700;
+    font-family: 'Mukta Malar', sans-serif; font-size: 13px;
     color: var(--maroon); transition: all 0.3s ease;
   }
   .lang-toggle button.active {
@@ -95,19 +93,23 @@
     box-shadow: 0 2px 8px rgba(80, 8, 38, 0.4);
   }
 
+  /* 100% Mobile Optimized Scene */
   .scene {
-    position: relative; width: min(520px, 94vw); margin: 40px auto;
+    position: relative; 
+    width: 95vw; /* Fills mobile screen */
+    max-width: 400px; /* Caps at native app size */
+    margin: 45px auto 20px;
     z-index: 10;
   }
 
   .gopuram {
-    position: relative; width: 100%; height: 110px; margin-bottom: -6px;
+    position: relative; width: 100%; height: 100px; margin-bottom: -6px;
     display: flex; justify-content: center; z-index: 2;
   }
-  .gopuram svg { width: 170px; height: 110px; filter: drop-shadow(0 4px 8px rgba(80, 8, 38, 0.35)); }
+  .gopuram svg { width: 160px; height: 100px; filter: drop-shadow(0 4px 8px rgba(80, 8, 38, 0.35)); }
 
   .door-wrap {
-    position: relative; width: 100%; aspect-ratio: 3/4; max-height: 560px;
+    position: relative; width: 100%; aspect-ratio: 3/4; max-height: 540px;
     margin: 0 auto; perspective: 1600px;
     border-radius: 14px; overflow: hidden; cursor: pointer;
     box-shadow: 0 20px 50px rgba(80, 8, 38, 0.4), inset 0 0 0 6px var(--gold), inset 0 0 0 10px var(--maroon-deep);
@@ -135,7 +137,7 @@
     box-shadow: 0 0 15px rgba(233, 200, 119, 0.2) inset;
   }
   .door-panel::after {
-    content: "❁"; position: absolute; font-size: clamp(30px, 8vw, 42px); color: var(--gold-light);
+    content: "❁"; position: absolute; font-size: 36px; color: var(--gold-light);
     text-shadow: 0 0 15px rgba(233, 200, 119, 0.9);
     top: 50%; transform: translateY(-50%);
   }
@@ -165,16 +167,16 @@
   .knock-prompt {
     position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
     text-align: center; z-index: 6; color: #fff3da;
-    background: rgba(0, 0, 0, 0.35); padding: 12px 24px;
+    background: rgba(0, 0, 0, 0.4); padding: 10px 20px;
     border-radius: 12px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(233, 200, 119, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     font-family: 'Mukta Malar', sans-serif; letter-spacing: .02em;
-    pointer-events: none;
+    pointer-events: none; width: 85%;
   }
   .knock-prompt .name {
     display: block; font-family: 'Catamaran', sans-serif; font-weight: 800;
-    font-size: clamp(20px, 5vw, 26px); color: var(--gold-light);
+    font-size: clamp(20px, 5.5vw, 24px); color: var(--gold-light);
     text-shadow: 0 0 14px rgba(233, 200, 119, 0.9);
     animation: name-pulse 2s ease-in-out infinite;
     margin-bottom: 4px;
@@ -183,15 +185,16 @@
     0%, 100% { opacity: 0.8; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.04); }
   }
-  .knock-prompt .hint { font-size: 14px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+  .knock-prompt .hint { font-size: 13px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
   .door-wrap.open .knock-prompt { opacity: 0; transition: opacity 0.3s ease; }
 
+  /* ---------- Inner Card ---------- */
   .invitation-card {
     position: relative; margin-top: -10px;
     background: radial-gradient(ellipse at 50% -10%, #ffffff 0%, #fff7e6 45%, var(--cream) 100%);
     border: 2px solid var(--gold); border-top: none;
     border-radius: 0 0 18px 18px;
-    padding: 40px 22px 30px; text-align: center;
+    padding: 30px 16px 26px; text-align: center;
     box-shadow: 0 25px 50px rgba(80, 8, 38, 0.2);
     
     opacity: 0; max-height: 0; transform: translateY(-30px) scale(0.95);
@@ -200,97 +203,111 @@
   }
   .door-wrap.open ~ .invitation-card,
   .scene.opened .invitation-card {
-    opacity: 1; max-height: 2000px; transform: translateY(0) scale(1); overflow: visible;
+    opacity: 1; max-height: 2500px; transform: translateY(0) scale(1); overflow: visible;
   }
 
-  .kolam { width: 74px; height: 74px; margin: 0 auto 12px; display: block; }
-  .kolam path {
-    fill: none; stroke: var(--magenta); stroke-width: 2.5; stroke-linecap: round;
-    stroke-dasharray: 400; stroke-dashoffset: 400;
-  }
-  .scene.opened .kolam path { animation: draw-kolam 2s cubic-bezier(0.4, 0, 0.2, 1) forwards 0.8s; }
-  @keyframes draw-kolam { to { stroke-dashoffset: 0; } }
+  /* Murugan Vel SVG Top */
+  .vel { width: 44px; height: 110px; margin: 0 auto 10px; display: block; filter: drop-shadow(0 4px 6px rgba(80, 8, 38, 0.2)); }
 
   .eyebrow {
-    font-size: clamp(12px, 3vw, 14px); letter-spacing: .03em; color: var(--maroon);
+    font-size: clamp(12px, 3.5vw, 14px); letter-spacing: .03em; color: var(--maroon);
     font-weight: 600; margin: 2px 0 10px;
   }
   h1.title {
     font-family: 'Catamaran', sans-serif; font-weight: 800; 
-    font-size: clamp(26px, 7vw, 36px);
+    font-size: clamp(24px, 7vw, 32px);
     color: var(--magenta); margin: 0 0 4px; line-height: 1.2;
     text-shadow: 1px 2px 0 #fff5de;
   }
   
-  .divider { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 12px 0 16px; color: var(--gold); }
+  .divider { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 10px 0 14px; color: var(--gold); }
   .divider::before, .divider::after { content: ""; height: 1.5px; width: 60px; background: linear-gradient(90deg, transparent, var(--gold)); }
   .divider::after { background: linear-gradient(-90deg, transparent, var(--gold)); }
   
-  .honoree { font-size: clamp(16px, 4vw, 19px); color: var(--maroon-deep); margin-bottom: 24px; }
+  .honoree { font-size: clamp(15px, 4vw, 18px); color: var(--maroon-deep); margin-bottom: 12px; }
   .honoree .name {
     display: block; font-family: 'Catamaran', sans-serif; font-weight: 800; 
-    font-size: clamp(24px, 6vw, 28px); color: var(--magenta); margin-top: 6px;
+    font-size: clamp(22px, 6vw, 26px); color: var(--magenta); margin-top: 4px;
   }
 
+  /* Baby Photo Frame */
+  .baby-frame {
+    width: 120px; height: 120px;
+    margin: 16px auto 24px;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--maroon));
+    box-shadow: 0 6px 16px rgba(122, 12, 62, 0.25);
+    position: relative;
+    z-index: 2;
+  }
+  .baby-frame img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    background-color: #fff7e6;
+  }
+
+  /* Details Card */
   .details {
-    text-align: left; max-width: 380px; margin: 0 auto 24px;
+    text-align: left; width: 100%; max-width: 360px; margin: 0 auto 24px;
     background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(233, 200, 119, 0.8);
-    border-radius: 12px; padding: 20px;
+    border-radius: 12px; padding: 16px;
     box-shadow: 0 4px 15px rgba(122, 12, 62, 0.05);
   }
-  .details .row { display: flex; gap: 16px; padding: 10px 0; border-bottom: 1px dashed rgba(122, 12, 62, 0.2); }
+  .details .row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px dashed rgba(122, 12, 62, 0.2); }
   .details .row:last-child { border-bottom: none; }
-  .details .label { min-width: 64px; font-weight: 700; color: var(--maroon); font-size: clamp(14px, 3.5vw, 16px); }
-  .details .value { color: var(--ink); font-size: clamp(14px, 3.5vw, 16px); line-height: 1.5; }
+  .details .label { min-width: 58px; font-weight: 700; color: var(--maroon); font-size: clamp(13px, 3.5vw, 15px); }
+  .details .value { color: var(--ink); font-size: clamp(13px, 3.5vw, 15px); line-height: 1.5; }
   .details .value b { color: var(--magenta); }
 
   .blessing {
-    font-size: clamp(15px, 4vw, 17px); line-height: 1.8; color: var(--maroon-deep);
-    max-width: 400px; margin: 0 auto 24px; font-style: italic;
+    font-size: clamp(14px, 4vw, 16px); line-height: 1.7; color: var(--maroon-deep);
+    max-width: 360px; margin: 0 auto 24px; font-style: italic; padding: 0 10px;
   }
 
   .map-btn {
-    display: inline-flex; align-items: center; gap: 10px;
+    display: inline-flex; align-items: center; gap: 8px;
     background: linear-gradient(135deg, var(--magenta), var(--maroon));
     color: #fff8ea; text-decoration: none; font-weight: 700;
-    padding: 12px 28px; border-radius: 999px; font-size: clamp(14px, 3.5vw, 16px);
+    padding: 12px 24px; border-radius: 999px; font-size: clamp(13px, 3.5vw, 15px);
     box-shadow: 0 8px 20px rgba(80, 8, 38, 0.3);
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
   .map-btn svg { width: 18px; height: 18px; }
 
-  .hosts { margin-top: 10px; }
-  .hosts .from { font-size: clamp(13px, 3vw, 15px); color: var(--maroon); margin-bottom: 4px; }
-  .hosts .names { font-family: 'Catamaran', sans-serif; font-weight: 800; font-size: clamp(18px, 4.5vw, 21px); color: var(--magenta); }
-  .hosts .phone { margin-top: 8px; font-size: clamp(14px, 3.5vw, 16px); }
+  .hosts { margin-top: 6px; }
+  .hosts .from { font-size: clamp(13px, 3.5vw, 14px); color: var(--maroon); margin-bottom: 4px; }
+  .hosts .names { font-family: 'Catamaran', sans-serif; font-weight: 800; font-size: clamp(16px, 4.5vw, 20px); color: var(--magenta); }
+  .hosts .phone { margin-top: 6px; font-size: clamp(13px, 3.5vw, 15px); }
   .hosts .phone a { color: var(--maroon-deep); text-decoration: none; font-weight: 700; }
 
-  .feet { display: flex; justify-content: center; gap: 16px; margin: 24px 0 8px; }
-  .feet svg { width: 28px; height: 36px; animation: footpad 2.5s ease-in-out infinite; }
+  .feet { display: flex; justify-content: center; gap: 14px; margin: 20px 0 8px; }
+  .feet svg { width: 24px; height: 32px; animation: footpad 2.5s ease-in-out infinite; }
   .feet svg:nth-child(2) { animation-delay: 0.4s; }
   @keyframes footpad { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
   .peacock {
-    position: absolute; left: -30px; bottom: -20px; width: 140px; opacity: 0.9;
-    filter: drop-shadow(0 8px 12px rgba(80, 8, 38, 0.2));
+    position: absolute; left: -20px; bottom: -15px; width: 110px; opacity: 0.9;
+    filter: drop-shadow(0 6px 10px rgba(80, 8, 38, 0.2));
     animation: peacock-sway 6s ease-in-out infinite;
     z-index: 1; pointer-events: none;
   }
   @keyframes peacock-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(3deg); } }
 
-  .lamp { position: absolute; right: -14px; top: -18px; width: 48px; z-index: 3; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); pointer-events: none;}
+  .lamp { position: absolute; right: -10px; top: -14px; width: 40px; z-index: 3; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); pointer-events: none;}
   .flame { animation: flicker 1.2s ease-in-out infinite alternate; transform-origin: 50% 90%; }
   @keyframes flicker { 0% { transform: scale(0.95) rotate(-1deg); } 100% { transform: scale(1.05) rotate(2deg); } }
 
   footer.note {
-    text-align: center; margin-top: 24px; font-size: clamp(12px, 3vw, 14px); 
+    text-align: center; margin-top: 20px; font-size: clamp(11px, 3vw, 13px); 
     color: var(--maroon-deep); opacity: 0.8; font-weight: 600;
   }
 </style>
 </head>
 
-<!-- Body loaded in English mode immediately -->
 <body class="lang-en">
 
 <main class="app-wrapper">
@@ -345,10 +362,24 @@
     </div>
 
     <div class="invitation-card" id="card">
-      <svg class="kolam" viewBox="0 0 100 100">
-        <path d="M50 8 C75 8 92 25 92 50 C92 75 75 92 50 92 C25 92 8 75 8 50 C8 25 25 8 50 8 Z
-                 M50 24 C67 24 76 33 76 50 C76 67 67 76 50 76 C33 76 24 67 24 50 C24 33 33 24 50 24 Z"/>
-        <path d="M50 8 L50 92 M8 50 L92 50 M20 20 L80 80 M80 20 L20 80"/>
+      
+      <!-- Murugan Vel SVG -->
+      <svg class="vel" viewBox="0 0 60 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="velGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#fbc98a"/>
+            <stop offset="50%" stop-color="#c9972b"/>
+            <stop offset="100%" stop-color="#8a6a1a"/>
+          </linearGradient>
+        </defs>
+        <rect x="26" y="90" width="8" height="90" fill="url(#velGold)" rx="3"/>
+        <path d="M20 90 L40 90 L34 70 L26 70 Z" fill="url(#velGold)"/>
+        <path d="M30 10 C45 40 50 75 30 90 C10 75 15 40 30 10 Z" fill="url(#velGold)"/>
+        <path d="M30 20 C40 45 42 70 30 85 C18 70 20 45 30 20 Z" fill="#e9c877" opacity="0.6"/>
+        <line x1="20" y1="60" x2="40" y2="60" stroke="#ffffff" stroke-width="3"/>
+        <line x1="18" y1="68" x2="42" y2="68" stroke="#ffffff" stroke-width="3"/>
+        <line x1="22" y1="52" x2="38" y2="52" stroke="#ffffff" stroke-width="3"/>
+        <circle cx="30" cy="60" r="2.5" fill="#a6144b"/>
       </svg>
 
       <div class="eyebrow">
@@ -368,6 +399,12 @@
           <span class="ta">நளினா நவீன்ராஜ்</span>
           <span class="en">Nalina Naveenraj</span>
         </span>
+      </div>
+
+      <!-- Baby Photo Section -->
+      <div class="baby-frame">
+        <!-- Add your baby photo here! Change the src link below to your image name, like src="baby.jpg" -->
+        <img src="https://placehold.co/400x400/fdecc8/a6144b?text=Baby+Photo" alt="Baby Photo" id="babyImage">
       </div>
 
       <div class="details">
